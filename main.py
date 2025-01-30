@@ -21,7 +21,7 @@ async def process_data(message: IncomingMessage):
     print(f"Processing data: {message.message}")
 
 
-@app.post("/api/participant/{id}/incoming", status_code=status.HTTP_201_CREATED)
+@app.post("/api/participant/{id}/incoming", status_code=status.HTTP_202_ACCEPTED)
 async def endpoint_individual(id: str, message: IncomingMessage, background_tasks: BackgroundTasks):
     background_tasks.add_task(process_data, message)
     return {"message": "Data received"}

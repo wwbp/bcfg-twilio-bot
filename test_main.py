@@ -19,5 +19,5 @@ def test_endpoint_individual():
 
     response = client.post("/api/participant/123/incoming", json=payload)
 
-    assert response.status_code == 201
+    assert response.status_code == 202
     assert response.json() == {"message": "Data received"}
