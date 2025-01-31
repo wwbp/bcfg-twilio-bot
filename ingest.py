@@ -1,19 +1,17 @@
 
-from pydantic import BaseModel
+from interface import IncomingMessage
+from database import verify_update_database
 
 
-class Context(BaseModel):
-    school_name: str
-    school_mascot: str
-    initial_message: str
-    week_number: int
-    name: str
+async def ingest(id: str, message: IncomingMessage):
+    # TODO: check and update database
+    verify_update_database(id, message)
 
+    # TODO: generate response send message to completion engine
+    
 
-class IncomingMessage(BaseModel):
-    context: Context
-    message: str
+    # TODO: background task: store response in database
 
+    # TODO: background task: send response to BCFG
 
-async def ingest(message: IncomingMessage):
-    print(f"Processing data: {message.message}")
+    pass
