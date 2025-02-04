@@ -1,7 +1,7 @@
 import httpx
+import os
 
-# Placeholder for the BCFG domain – update this with the actual domain when available.
-BCFG_DOMAIN = ""
+BCFG_DOMAIN = os.getenv("BCFG_DOMAIN", "https://bcfg-domain.com")
 
 
 async def send_message_to_participant(participant_id: str, message: str):

@@ -13,6 +13,7 @@ pytest = "*"
 httpx = "*"
 pytest-asyncio = "*"
 black = "*"
+respx = "*"
 
 [dev-packages]
 

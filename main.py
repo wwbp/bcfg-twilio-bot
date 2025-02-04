@@ -9,7 +9,7 @@ app = FastAPI()
 async def endpoint_individual(
     id: str, message: IncomingMessage, background_tasks: BackgroundTasks
 ):
-    background_tasks.add_task(ingest, id, message)
+    background_tasks.add_task(ingest, id, message, background_tasks)
     return {"message": "Data received"}
 
 
@@ -17,5 +17,5 @@ async def endpoint_individual(
 async def endpoint_group(
     id: str, message: GroupIncomingMessage, background_tasks: BackgroundTasks
 ):
-    background_tasks.add_task(ingest_group, id, message)
+    background_tasks.add_task(ingest_group, id, message, background_tasks)
     return {"message": "Data received"}

@@ -1,6 +1,8 @@
 import pytest
 from completion import generate_response
 
+pytestmark = pytest.mark.asyncio(scope="function")
+
 
 @pytest.mark.asyncio
 async def test_generate_response():
