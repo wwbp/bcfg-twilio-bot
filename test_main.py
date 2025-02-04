@@ -12,9 +12,9 @@ def test_endpoint_individual():
             "school_mascot": "wolverine",
             "initial_message": "Starting college is like [...]",
             "week_number": 4,
-            "name": "James"
+            "name": "James",
         },
-        "message": "What a lovely day"
+        "message": "What a lovely day",
     }
     response = client.post("/api/participant/123/incoming", json=payload)
     assert response.status_code == 202
@@ -28,15 +28,11 @@ def test_endpoint_group():
             "school_mascot": "wolverine",
             "initial_message": "Starting college is like [...]",
             "week_number": 4,
-            "participants": [
-                {"name": "James", "id": "1"},
-                {"name": "Mary", "id": "2"}
-            ]
+            "participants": [{"name": "James", "id": "1"}, {"name": "Mary", "id": "2"}],
         },
         "sender_id": "2",
-        "message": "Hi everyone"
+        "message": "Hi everyone",
     }
-    response = client.post(
-        "/api/participantgroup/group123/incoming", json=payload)
+    response = client.post("/api/participantgroup/group123/incoming", json=payload)
     assert response.status_code == 202
     assert response.json() == {"message": "Data received"}

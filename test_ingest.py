@@ -1,8 +1,7 @@
 import pytest
+from fastapi import BackgroundTasks
 from interface import IncomingMessage, GroupIncomingMessage, Context, Participant
-import asyncio
-import json
-import ingest  # Import the module to patch its functions
+import ingest  # This is your ingest module
 
 
 @pytest.mark.asyncio
@@ -13,7 +12,7 @@ async def test_ingest_individual(monkeypatch):
         school_mascot="wolverine",
         initial_message="Starting college is like ...",
         week_number=4,
-        name="James"
+        name="James",
     )
     message_data = IncomingMessage(context=context, message="Hello")
 
@@ -30,28 +29,37 @@ async def test_ingest_individual(monkeypatch):
     # Replace the generate_response function with a dummy async function.
     async def dummy_generate_response(state, instructions, message):
         return "dummy response"
+
     monkeypatch.setattr(ingest, "generate_response", dummy_generate_response)
 
-    await ingest.ingest("123", message_data)
+    # Create a BackgroundTasks instance.
+    background_tasks = BackgroundTasks()
+
+    # Call ingest with the background_tasks parameter.
+    await ingest.ingest("123", message_data, background_tasks)
+
+    # Assert that the database function was called.
     assert db_called
+
+    # Assert that a background task was added.
+    # The .tasks property is a list of tasks added.
+    assert len(background_tasks.tasks) == 1
 
 
 @pytest.mark.asyncio
 async def test_ingest_group(monkeypatch):
     # Prepare a dummy group incoming message.
-    participants = [Participant(name="James", id="1"),
-                    Participant(name="Mary", id="2")]
+    participants = [Participant(name="James", id="1"), Participant(name="Mary", id="2")]
     group_context = {
         "school_name": "Acme University",
         "school_mascot": "wolverine",
         "initial_message": "Starting college is like ...",
         "week_number": 4,
-        "participants": [p.dict() for p in participants]
+        # For this test, assume your GroupIncomingMessage context accepts a list of Participant objects.
+        "participants": participants,
     }
     group_msg = GroupIncomingMessage(
-        context=group_context,
-        sender_id="2",
-        message="Hi everyone"
+        context=group_context, sender_id="2", message="Hi everyone"
     )
 
     db_called = False
@@ -64,7 +72,12 @@ async def test_ingest_group(monkeypatch):
 
     async def dummy_generate_response(state, instructions, message):
         return "dummy group response"
+
     monkeypatch.setattr(ingest, "generate_response", dummy_generate_response)
 
-    await ingest.ingest_group("group123", group_msg)
+    background_tasks = BackgroundTasks()
+
+    await ingest.ingest_group("group123", group_msg, background_tasks)
+
     assert db_called
+    assert len(background_tasks.tasks) == 1

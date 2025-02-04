@@ -12,6 +12,7 @@ pydantic = "*"
 pytest = "*"
 httpx = "*"
 pytest-asyncio = "*"
+black = "*"
 
 [dev-packages]
 
