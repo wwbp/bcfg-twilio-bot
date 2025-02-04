@@ -117,11 +117,11 @@
         },
         "beautifulsoup4": {
             "hashes": [
-                "sha256:b0ebbcecbfbed2f28e07fb8d004494dfb3030711874a034551ac52008b87a1d1",
-                "sha256:da9184389e6848818cf31c970ba3cbe6f33c2b8fbabd70d5bd4a2bfa0c1c4272"
+                "sha256:1bd32405dacc920b42b83ba01644747ed77456a65760e285fbc47633ceddaf8b",
+                "sha256:99045d7d3f08f91f0d656bc9b7efbae189426cd913d830294a15eefa0ea4df16"
             ],
             "markers": "python_full_version >= '3.7.0'",
-            "version": "==4.13.2"
+            "version": "==4.13.3"
         },
         "black": {
             "hashes": [
