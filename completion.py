@@ -2,9 +2,7 @@ import os
 from kani import Kani
 from kani.engines.openai import OpenAIEngine
 
-
-api_key = os.getenv(
-    "OPENAI_API_KEY", "")
+api_key = os.getenv("OPENAI_API_KEY", "")
 
 
 async def _generate_response(state, instructions, message):
@@ -18,7 +16,6 @@ async def _generate_response(state, instructions, message):
 
 
 async def generate_response(stateJSON, instructions, message):
-    # create temporary json file using state
     state = "kani_state.json"
     if stateJSON:
         with open(state, "w") as f:

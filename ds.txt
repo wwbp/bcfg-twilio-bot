@@ -1,0 +1,16 @@
+./
+    ingest.py
+    completion.py
+    database.py
+    interface.py
+    temp_123.json
+    ls.py
+    kani_state.json
+    Pipfile
+    expl_kani.ipynb
+    main.py
+    test_main.py
+    Pipfile.lock
+    test_completion.py
+    pytest.json
+    ds.txt

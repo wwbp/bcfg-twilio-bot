@@ -1,5 +1,4 @@
 import pytest
-import asyncio
 from completion import generate_response
 
 

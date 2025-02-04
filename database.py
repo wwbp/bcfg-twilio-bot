@@ -1,12 +1,7 @@
-
-
-from interface import IncomingMessage
-
-
-def verify_update_database(id: str, message: IncomingMessage):
+def verify_update_database(id: str, message):
     """
-    1. verify is participant exists with this id
-    2. create participant if not exists
-    
+    Verify if the participant (or group) exists;
+    create a record if not.
     """
-    pass
+    print(f"Verifying/updating database for id {id} with message: {message}")
+    # TODO: implement real DB operations
