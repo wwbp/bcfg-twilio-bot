@@ -5,6 +5,11 @@ from interface import IncomingMessage, GroupIncomingMessage
 app = FastAPI()
 
 
+@app.get("/health", status_code=status.HTTP_200_OK)
+async def health_check():
+    return {"status": "healthy"}
+
+
 @app.post("/api/participant/{id}/incoming", status_code=status.HTTP_202_ACCEPTED)
 async def endpoint_individual(
     id: str, message: IncomingMessage, background_tasks: BackgroundTasks

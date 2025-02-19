@@ -23,7 +23,8 @@ def verify_update_database(id: str, message):
     if exists:
         logger.info(f"Participant/group ID {id} exists. Updating records.")
     else:
-        logger.warning(f"Participant/group ID {id} not found. Creating a new record.")
+        logger.warning(
+            f"Participant/group ID {id} not found. Creating a new record. Recieved message: {message}")
 
     logger.debug(f"Received message for verification: {message}")
 
