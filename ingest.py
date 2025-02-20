@@ -19,7 +19,7 @@ async def ingest(id: str, data: IncomingMessage, background_tasks: BackgroundTas
     response = await generate_response(history_json, instructions, data.message)
 
     background_tasks.add_task(save_chat_round, id, data.message, response)
-    # background_tasks.add_task(send_message_to_participant, id, response)
+    background_tasks.add_task(send_message_to_participant, id, response)
 
     print(f"Generated response for participant {id}: {response}")
 
