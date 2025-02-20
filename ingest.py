@@ -1,24 +1,25 @@
 from interface import IncomingMessage, GroupIncomingMessage
-from database import verify_update_database, load_chat_history_json
+from database import verify_update_database, load_chat_history_json, save_chat_round
 from completion import generate_response
 from fastapi import BackgroundTasks
 
 from send import send_message_to_participant, send_message_to_participant_group
 
 
-async def ingest(id: str, message: IncomingMessage, background_tasks: BackgroundTasks):
+async def ingest(id: str, data: IncomingMessage, background_tasks: BackgroundTasks):
     # Verify or update the database (or create the user/assistant record)
-    verify_update_database(id, message)
+    verify_update_database(id, data)
     history_json = load_chat_history_json(id)
 
     # prompt pull
     instructions = (
-        f"Chat with {message.context.name} from {message.context.school_name}"
+        f"Chat with {data.context.name} from {data.context.school_name}"
     )
 
-    response = await generate_response(history_json, instructions, message.message)
+    response = await generate_response(history_json, instructions, data.message)
 
-    background_tasks.add_task(send_message_to_participant, id, response)
+    background_tasks.add_task(save_chat_round, id, data.message, response)
+    # background_tasks.add_task(send_message_to_participant, id, response)
 
     print(f"Generated response for participant {id}: {response}")
 
