@@ -1,5 +1,5 @@
 from interface import IncomingMessage, GroupIncomingMessage
-from database import verify_update_database
+from database import verify_update_database, load_chat_history_json
 from completion import generate_response
 from fastapi import BackgroundTasks
 
@@ -9,16 +9,20 @@ from send import send_message_to_participant, send_message_to_participant_group
 async def ingest(id: str, message: IncomingMessage, background_tasks: BackgroundTasks):
     # Verify or update the database (or create the user/assistant record)
     verify_update_database(id, message)
+    history_json = load_chat_history_json(id)
 
-    # Correctly formatted instruction string using both name and school_name
+    # prompt pull
     instructions = (
         f"Chat with {message.context.name} from {message.context.school_name}"
     )
-    response = await generate_response("", instructions, message.message)
+
+    response = await generate_response(history_json, instructions, message.message)
 
     background_tasks.add_task(send_message_to_participant, id, response)
-    # In production, update the database and trigger the outgoing API call.
+
     print(f"Generated response for participant {id}: {response}")
+
+    return
 
 
 async def ingest_group(
@@ -30,7 +34,8 @@ async def ingest_group(
     verify_update_database(id, message)  # Stubbed DB update for now
 
     # Create an instructions string that lists the participants.
-    participant_names = ", ".join([p.name for p in message.context.participants])
+    participant_names = ", ".join(
+        [p.name for p in message.context.participants])
     instructions = f"Group chat from {message.context.school_name} with participants: {participant_names}"
     response = await generate_response("", instructions, message.message)
 
